@@ -15,5 +15,16 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
         }
+
+
+        /// <summary>
+        /// Timer timeout event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dataPolling(object sender, EventArgs e)
+        {
+
+        }
     }
 }
