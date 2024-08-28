@@ -34,11 +34,11 @@
             this.radioButtonResetOn = new System.Windows.Forms.RadioButton();
             this.radioButtonResetOff = new System.Windows.Forms.RadioButton();
             this.labelEnableDisable = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.labelFault = new System.Windows.Forms.Label();
+            this.labelTargetReached = new System.Windows.Forms.Label();
             this.timerPolling = new System.Windows.Forms.Timer(this.components);
-            this.radioButton = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButtonEmgOn = new System.Windows.Forms.RadioButton();
+            this.radioButtonEmgOff = new System.Windows.Forms.RadioButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.textBoxComPort = new System.Windows.Forms.TextBox();
@@ -52,6 +52,7 @@
             this.textBoxPositionDemandInternalValue = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxTorqueActualValue = new System.Windows.Forms.TextBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +66,7 @@
             this.radioButtonEnableOn.TabStop = true;
             this.radioButtonEnableOn.Text = "使能";
             this.radioButtonEnableOn.UseVisualStyleBackColor = true;
+            this.radioButtonEnableOn.CheckedChanged += new System.EventHandler(this.ControlChanged);
             // 
             // radioButtonEnableOff
             // 
@@ -76,6 +78,7 @@
             this.radioButtonEnableOff.TabStop = true;
             this.radioButtonEnableOff.Text = "禁能";
             this.radioButtonEnableOff.UseVisualStyleBackColor = true;
+            this.radioButtonEnableOff.CheckedChanged += new System.EventHandler(this.ControlChanged);
             // 
             // radioButtonResetOn
             // 
@@ -87,6 +90,7 @@
             this.radioButtonResetOn.TabStop = true;
             this.radioButtonResetOn.Text = "故障清除On";
             this.radioButtonResetOn.UseVisualStyleBackColor = true;
+            this.radioButtonResetOn.CheckedChanged += new System.EventHandler(this.ControlChanged);
             // 
             // radioButtonResetOff
             // 
@@ -98,6 +102,7 @@
             this.radioButtonResetOff.TabStop = true;
             this.radioButtonResetOff.Text = "故障清除Off";
             this.radioButtonResetOff.UseVisualStyleBackColor = true;
+            this.radioButtonResetOff.CheckedChanged += new System.EventHandler(this.ControlChanged);
             // 
             // labelEnableDisable
             // 
@@ -109,51 +114,53 @@
             this.labelEnableDisable.TabIndex = 4;
             this.labelEnableDisable.Text = "綠:使能/紅:禁能";
             // 
-            // label2
+            // labelFault
             // 
-            this.label2.AutoSize = true;
-            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label2.Location = new System.Drawing.Point(198, 56);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(124, 14);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "紅:故障狀態/綠:無故障";
+            this.labelFault.AutoSize = true;
+            this.labelFault.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelFault.Location = new System.Drawing.Point(198, 56);
+            this.labelFault.Name = "labelFault";
+            this.labelFault.Size = new System.Drawing.Size(124, 14);
+            this.labelFault.TabIndex = 5;
+            this.labelFault.Text = "紅:故障狀態/綠:無故障";
             // 
-            // label3
+            // labelTargetReached
             // 
-            this.label3.AutoSize = true;
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Location = new System.Drawing.Point(198, 137);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(124, 14);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "綠:目標抵達/紅:未到達";
+            this.labelTargetReached.AutoSize = true;
+            this.labelTargetReached.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.labelTargetReached.Location = new System.Drawing.Point(198, 137);
+            this.labelTargetReached.Name = "labelTargetReached";
+            this.labelTargetReached.Size = new System.Drawing.Size(124, 14);
+            this.labelTargetReached.TabIndex = 6;
+            this.labelTargetReached.Text = "綠:目標抵達/紅:未到達";
             // 
             // timerPolling
             // 
             this.timerPolling.Tick += new System.EventHandler(this.dataPolling);
             // 
-            // radioButton
+            // radioButtonEmgOn
             // 
-            this.radioButton.AutoSize = true;
-            this.radioButton.Location = new System.Drawing.Point(14, 97);
-            this.radioButton.Name = "radioButton";
-            this.radioButton.Size = new System.Drawing.Size(61, 16);
-            this.radioButton.TabIndex = 7;
-            this.radioButton.TabStop = true;
-            this.radioButton.Text = "急停On";
-            this.radioButton.UseVisualStyleBackColor = true;
+            this.radioButtonEmgOn.AutoSize = true;
+            this.radioButtonEmgOn.Location = new System.Drawing.Point(14, 97);
+            this.radioButtonEmgOn.Name = "radioButtonEmgOn";
+            this.radioButtonEmgOn.Size = new System.Drawing.Size(61, 16);
+            this.radioButtonEmgOn.TabIndex = 7;
+            this.radioButtonEmgOn.TabStop = true;
+            this.radioButtonEmgOn.Text = "急停On";
+            this.radioButtonEmgOn.UseVisualStyleBackColor = true;
+            this.radioButtonEmgOn.CheckedChanged += new System.EventHandler(this.ControlChanged);
             // 
-            // radioButton2
+            // radioButtonEmgOff
             // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(106, 97);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(63, 16);
-            this.radioButton2.TabIndex = 8;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "急停Off";
-            this.radioButton2.UseVisualStyleBackColor = true;
+            this.radioButtonEmgOff.AutoSize = true;
+            this.radioButtonEmgOff.Location = new System.Drawing.Point(106, 97);
+            this.radioButtonEmgOff.Name = "radioButtonEmgOff";
+            this.radioButtonEmgOff.Size = new System.Drawing.Size(63, 16);
+            this.radioButtonEmgOff.TabIndex = 8;
+            this.radioButtonEmgOff.TabStop = true;
+            this.radioButtonEmgOff.Text = "急停Off";
+            this.radioButtonEmgOff.UseVisualStyleBackColor = true;
+            this.radioButtonEmgOff.CheckedChanged += new System.EventHandler(this.ControlChanged);
             // 
             // panel1
             // 
@@ -168,13 +175,13 @@
             this.panel1.Controls.Add(this.label4);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.labelEnableDisable);
-            this.panel1.Controls.Add(this.radioButton2);
+            this.panel1.Controls.Add(this.radioButtonEmgOff);
             this.panel1.Controls.Add(this.radioButtonEnableOn);
-            this.panel1.Controls.Add(this.radioButton);
+            this.panel1.Controls.Add(this.radioButtonEmgOn);
             this.panel1.Controls.Add(this.radioButtonEnableOff);
-            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.labelTargetReached);
             this.panel1.Controls.Add(this.radioButtonResetOn);
-            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.labelFault);
             this.panel1.Controls.Add(this.radioButtonResetOff);
             this.panel1.Location = new System.Drawing.Point(12, 42);
             this.panel1.Name = "panel1";
@@ -189,6 +196,7 @@
             this.button1.TabIndex = 10;
             this.button1.Text = "通訊連接";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.connectModbus);
             // 
             // textBoxComPort
             // 
@@ -283,11 +291,21 @@
             this.textBoxTorqueActualValue.Size = new System.Drawing.Size(197, 22);
             this.textBoxTorqueActualValue.TabIndex = 18;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(107, 431);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 12;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.textBoxComPort);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
@@ -307,11 +325,11 @@
         private System.Windows.Forms.RadioButton radioButtonResetOn;
         private System.Windows.Forms.RadioButton radioButtonResetOff;
         private System.Windows.Forms.Label labelEnableDisable;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelFault;
+        private System.Windows.Forms.Label labelTargetReached;
         private System.Windows.Forms.Timer timerPolling;
-        private System.Windows.Forms.RadioButton radioButton;
-        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButtonEmgOn;
+        private System.Windows.Forms.RadioButton radioButtonEmgOff;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
@@ -325,6 +343,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox textBoxTorqueActualValue;
+        private System.Windows.Forms.Button button2;
     }
 }
 

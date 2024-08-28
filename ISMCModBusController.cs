@@ -29,10 +29,8 @@ namespace WindowsFormsApp1
             HOME_ACC_DEC = 0x609A,
         }
 
-        private IModbusMaster _master;
+        private IModbusMaster _master = null;
         private SerialPort _serial_port;
-
-        private const string PrimarySerialPortName = "COM4";
 
         private ushort _status_word;
         private ushort _control_word;
@@ -134,7 +132,7 @@ namespace WindowsFormsApp1
         /// <summary>
         /// 
         /// </summary>
-        public void initializeModbusRTUMaster()
+        public void ConnectModbusRTUMaster(string PrimarySerialPortName = "COM4")
         {
             this._serial_port = new SerialPort(PrimarySerialPortName);
 
