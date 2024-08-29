@@ -57,6 +57,9 @@ namespace WindowsFormsApp1
 
         private void ControlChanged(object sender, EventArgs e)
         {
+            if (!_controller.IsModbusMasterReady)
+                return;
+
             _controller.ControlEnableOperation = radioButtonEnableOn.Checked;
             _controller.ControlFaultReset = radioButtonResetOn.Checked;
             _controller.ControlQuickStop = radioButtonEmgOn.Checked;

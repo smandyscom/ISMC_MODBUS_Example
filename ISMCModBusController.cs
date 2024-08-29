@@ -16,6 +16,17 @@ namespace WindowsFormsApp1
             /// </summary>
             STATUS_WORD = 0x6041,
 
+            DEMAND_POS_LOW = 0x6062,
+            DEMAND_POS_HIGH = 0x6059, //unofficial estimate
+
+            ACTUAL_POS_LOW = 0x6064,
+            ACTUAL_POS_HIGH = 0x6201,
+
+            ACTUAL_VELO_LOW = 0x606C,
+            ACTUAL_VELO_HIGH = 0x6202,
+
+            ACTUAL_TORQUE = 0x6077,
+
 
             CONTROL_WORD = 0x6040,
             MODE_OF_OPERATION = 0x6060,
@@ -29,7 +40,17 @@ namespace WindowsFormsApp1
             HOME_ACC_DEC = 0x609A,
         }
 
+
+        public bool IsModbusMasterReady
+        {
+            get
+            {
+                return _master != null;
+            }
+        }
+
         private IModbusMaster _master = null;
+        private byte _slaveAddress = 1;
         private SerialPort _serial_port;
 
         private ushort _status_word;
@@ -73,6 +94,39 @@ namespace WindowsFormsApp1
                 return (_status_word & (1 << 10)) != 0; // bit 10
             }
         }
+
+        public int PositionActualValue;
+        public int PositionDemandValue;
+        public int VelocityActualValue;
+        public short TorqueActualValue;
+
+        private uint _ushorts2uint(ushort _high,ushort _low)
+        {
+            uint _result = 0;
+
+            _result |= _low;
+
+            uint _high_uint = (uint)_high << 16; // move them to high positions
+            _result |= _high_uint;
+
+            return _result;
+        }
+
+        public static T _ushortsToType<T>(ushort _high, ushort _low) where T : struct
+        {
+            uint _result = 0;
+
+            // Combine the lower 16 bits
+            _result |= _low;
+
+            // Shift the high 16 bits and combine them
+            uint _high_uint = (uint)_high << 16;
+            _result |= _high_uint;
+
+            // Cast the result to the requested return type
+            return (T)System.Convert.ChangeType(_result, typeof(T));
+        }
+
 
         private uint _bitwiseSetup(uint input, byte position, bool value)
         {
@@ -151,24 +205,46 @@ namespace WindowsFormsApp1
         /// <summary>
         ///     Simple Modbus serial RTU master write holding registers example.
         /// </summary>
-        public void ModbusSerialRtuMasterWriteRegisters()
-        {
-           byte slaveId = 1;
-           ushort startAddress = 100;
-           ushort[] registers = new ushort[] { 1, 2, 3 };
+        //public void ModbusSerialRtuMasterWriteRegisters()
+        //{
+        //   byte slaveId = 1;
+        //   ushort startAddress = 100;
+        //   ushort[] registers = new ushort[] { 1, 2, 3 };
 
-           // write three registers
-           this._master.WriteMultipleRegisters(slaveId, startAddress, registers);
-        }
+        //   // write three registers
+        //   this._master.WriteMultipleRegisters(slaveId, startAddress, registers);
+        //}
 
         public void UpdateStatusWord()
         {
-            this._status_word = this._master.ReadHoldingRegisters(1, (ushort)ISMC_MODBUS_ADDRESS.STATUS_WORD, 0)[0];
+            this._status_word = this._master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.STATUS_WORD, 0)[0];
         }
+
+        public void UpdateValues()
+        {
+            ushort _low_value = 0;
+            ushort _high_value = 0;
+
+            _low_value = _master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.DEMAND_POS_LOW, 0)[0];
+            _high_value = _master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.DEMAND_POS_HIGH, 0)[0];
+            PositionDemandValue = _ushortsToType<int>(_high_value, _low_value);
+
+            _low_value = _master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.ACTUAL_POS_LOW, 0)[0];
+            _high_value = _master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.ACTUAL_POS_HIGH, 0)[0];
+            PositionActualValue = _ushortsToType<int>(_high_value, _low_value);
+
+            _low_value = _master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.ACTUAL_VELO_LOW, 0)[0];
+            _high_value = _master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.ACTUAL_VELO_HIGH, 0)[0];
+            VelocityActualValue = _ushortsToType<int>(_high_value, _low_value);
+
+            TorqueActualValue = (short)_master.ReadHoldingRegisters(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.ACTUAL_TORQUE, 0)[0];
+           
+        }
+
 
         public void OverrideControlWord()
         {
-            this._master.WriteSingleRegister(1, (ushort)ISMC_MODBUS_ADDRESS.CONTROL_WORD, this._control_word);
+            this._master.WriteSingleRegister(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.CONTROL_WORD, this._control_word);
         }
 
         /// <summary>
