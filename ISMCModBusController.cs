@@ -35,9 +35,18 @@ namespace WindowsFormsApp1
             /// Homing
             /// </summary>
             HOME_METHOD = 0x6098,
-            HOME_OFFSET = 0x607C,
-            HOME_SPEED = 0x6099,
-            HOME_ACC_DEC = 0x609A,
+
+            HOME_OFFSET_H = 0x607C,
+            HOME_OFFSET_L = 0x610D,
+
+            HOME_SPEED_FAST_H = 0x6099,
+            HOME_SPEED_FAST_L = 0x6111,
+
+            HOME_SPEED_LOW_H = 0x6113,
+            HOME_SPEED_LOW_L = 0x6112,
+
+            HOME_ACC_DEC_H = 0x609A,
+            HOME_ACC_DEC_L = 0x610C,
         }
 
 
@@ -257,9 +266,10 @@ namespace WindowsFormsApp1
         ///位:cnt/s）；
         ///⑥设置【609Ah：Homing acceleration】，设置回零加减速度（单位：cnt/s^2）；
         /// </summary>
-        public void OverrideHMParameters()
+        public void OverrideHMParameters(ushort home_method,int home_offset,int home_speed_high,int home_speed_low,int home_acc)
         {
-            
+            _master.WriteSingleRegister(_slaveAddress, (ushort)ISMC_MODBUS_ADDRESS.MODE_OF_OPERATION, 6);
+
         }
 
 
